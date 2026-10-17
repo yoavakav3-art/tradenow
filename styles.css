@@ -341,3 +341,4 @@ main.wrap{padding-top:0}
 @media (max-width:760px){.cm{flex-wrap:wrap;white-space:normal;gap:2px 8px}.cm span{overflow:visible}}
 .band{background:#2F8AFA}.band p{color:var(--ink)}
 .foot .logo{color:#fff}.foot .logo b{color:var(--glow)}
+main.wrap{padding-top:22px}.band{margin-top:-22px}
