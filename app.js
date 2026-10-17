@@ -46,11 +46,10 @@ function card(l) {
   const img = l.images && l.images[0];
   const r = rank(l);
   return `<a class="card ${r === 2 ? 'top' : r === 1 ? 'promo' : ''}" href="#/item/${l.id}">
-  <div class="ph">${img ? `<img loading="lazy" decoding="async" src="${thumbUrl(img)}" ${imgFallback(img)} alt="${esc(l.title)}">` : `<div class="noimg">${ic('photo', 44, '#94A3B8')}</div>`}
-  <span class="badge ${l.condition === 'new' ? 'new' : ''}">${COND[l.condition]}</span>
-  ${r ? `<span class="pbadge">${ic('bolt', 13, '#0F172A', 2.2)}${r === 2 ? 'בראש' : 'מקודם'}</span>` : ''}
+  <div class="ph">${img ? `<img loading="lazy" decoding="async" src="${thumbUrl(img)}" ${imgFallback(img)} alt="${esc(l.title)}">` : `<div class="noimg">${ic('photo', 40, '#94A3B8')}</div>`}
+  <span class="tag">${price(l.price)}</span>
   ${l.status === 'sold' ? '<span class="soldtag">נמכר</span>' : ''}</div>
-  <div class="cb"><div class="ct">${esc(l.title)}</div><div class="cp">${price(l.price)}</div><div class="cm">${ic('map-pin', 13, '#5B6576', 2)}${esc(l.city)} · ${ago(l.created_at)}</div></div></a>`;
+  <div class="cb"><div class="ct">${esc(l.title)}</div><div class="cm"><span class="cond">${COND[l.condition]}</span><span>${esc(l.city)}</span><span>${ago(l.created_at)}</span></div>${r ? `<div class="pmark">${r === 2 ? 'בראש הדף' : 'מקודם'}</div>` : ''}</div></a>`;
 }
 function grid(list) { return `<div class="grid">${list.map(card).join('')}</div>`; }
 function sortRanked(list) { return list.sort((a, b) => rank(b) - rank(a) || new Date(b.created_at) - new Date(a.created_at)); }
@@ -113,18 +112,22 @@ async function pHome(_, id) {
   if (stale(id)) return;
   const items = sortRanked(list || []);
   const promoted = items.filter(l => rank(l) > 0).slice(0, 8);
-  const tiles = [['device-mobile', 0], ['shoe', 1], ['headphones', 2]].map(([n, g], k) => `<div class="tile" style="width:${[110, 130, 100][k]}px;height:${[110, 130, 100][k]}px;background:${GRADS[g]}">${ic(n, [62, 74, 56][k], '#fff', 1.5)}</div>`).join('');
+  const shots = (list || []).filter(l => l.images && l.images[0]).slice(0, 5);
   V.innerHTML = `
-  <section class="hero"><div style="position:relative">
-    <h1>קונים ומוכרים<br>הכל, בקלות.</h1>
-    <p>יד שנייה, מוצרים חדשים ומותגים קטנים. מפרסמים בחינם תוך דקה ומדברים ישירות עם המוכר.</p>
-    <div class="row-actions"><a class="btn btn-p" href="#/sell">${ic('plus', 18, '#fff', 2.6)}לפרסם מוצר</a><a class="btn" style="background:transparent;color:#fff;border:1.5px solid #3A4A6B" href="#/search">${ic('search', 18, '#fff', 2.2)}לחפש</a></div>
-  </div><div class="tiles">${tiles}</div></section>
-  <section class="sec"><div class="cats">${Object.entries(CATS).map(([k, [t, i]]) => `<a class="cat" href="#/search?cat=${k}"><span class="ci">${ic(i, 28, '#0A64E8')}</span>${t}</a>`).join('')}</div></section>
-  ${trends && trends.length ? `<section class="sec panel" style="padding:16px 18px"><div class="chips" style="align-items:center"><strong style="display:flex;align-items:center;gap:6px;margin-left:6px">${ic('flame', 20, '#E8590C')}מה מחפשים עכשיו</strong>${trends.map(t => `<a class="chip" href="#/search?q=${encodeURIComponent(t.query)}">${esc(t.query)}</a>`).join('')}</div></section>` : ''}
+  <section class="intro">
+    <div class="intro-txt">
+      <h1>קונים ומוכרים ישר מאנשים.</h1>
+      <p>יד שנייה, מוצרים חדשים ומותגים קטנים. מעלים מודעה בחינם, מדברים בצ׳אט עם המוכר וסוגרים ביניכם.</p>
+      <div class="row-actions"><a class="btn btn-p" href="#/sell">${ic('plus', 18, '#fff', 2.4)}לפרסם מודעה</a><a class="btn btn-g" href="#/search">לכל המודעות</a></div>
+      ${(list || []).length ? `<p class="count">${(list || []).length} מודעות פעילות באתר עכשיו</p>` : ''}
+    </div>
+    ${shots.length >= 3 ? `<div class="shots">${shots.map(l => `<a href="#/item/${l.id}" class="shot"><img src="${thumbUrl(l.images[0])}" ${imgFallback(l.images[0])} alt="${esc(l.title)}"><span class="tag">${price(l.price)}</span></a>`).join('')}</div>` : ''}
+  </section>
+  <nav class="catrow" aria-label="קטגוריות">${Object.entries(CATS).map(([k, [t, i]]) => `<a href="#/search?cat=${k}">${ic(i, 20, '#1E5FC4', 1.8)}${t}</a>`).join('')}</nav>
+  ${trends && trends.length ? `<p class="trends">מחפשים עכשיו: ${trends.map(t => `<a href="#/search?q=${encodeURIComponent(t.query)}">${esc(t.query)}</a>`).join('')}</p>` : ''}
   ${promoted.length ? `<section class="sec"><div class="sech"><h2>מודעות מקודמות</h2></div>${grid(promoted)}</section>` : ''}
-  <section class="sec"><div class="sech"><h2>מודעות חדשות</h2><a href="#/search">הכל ›</a></div>
-  ${items.length ? grid(items.filter(l => !promoted.includes(l))) : `<div class="panel empty">${ic('shopping-bag', 52, '#94A3B8')}<h3>עוד אין מודעות באתר</h3><p>האתר רק נפתח. תהיה הראשון לפרסם!</p><a class="btn btn-p" href="#/sell">לפרסם מוצר ראשון</a></div>`}</section>`;
+  <section class="sec"><div class="sech"><h2>עלו לאחרונה</h2><a href="#/search">לכל המודעות</a></div>
+  ${items.length ? grid(items.filter(l => !promoted.includes(l))) : `<div class="panel empty"><h3>עוד אין מודעות באתר</h3><p>מה שתפרסם עכשיו יופיע כאן ראשון.</p><a class="btn btn-p" href="#/sell">לפרסם מודעה</a></div>`}</section>`;
 }
 
 async function pSearch(_, id) {

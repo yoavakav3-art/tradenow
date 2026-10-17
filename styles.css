@@ -192,3 +192,59 @@ a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible,
 main:focus,main:focus-visible{outline:none}
 .foot .copy{font-size:13px;opacity:.75;margin-top:6px}
 @media (prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
+
+/* ===== visual refresh: real photos first, price-tag stickers, calmer chrome ===== */
+@font-face{font-family:'Secular One';font-weight:400;font-display:swap;src:url(secular-one-hebrew-400-normal.woff2) format('woff2');unicode-range:U+0307-0308,U+0590-05FF,U+200C-2010,U+25CC,U+FB1D-FB4F}
+@font-face{font-family:'Secular One';font-weight:400;font-display:swap;src:url(secular-one-latin-400-normal.woff2) format('woff2');unicode-range:U+0000-00FF,U+2000-206F,U+20AC,U+2122}
+:root{--bg:#F5F6F8;--ink:#101828;--tagc:#FFD84D;--blue:#1767D2;--blue-d:#0F4FA8;--disp:'Secular One',Heebo,sans-serif}
+.btn{border-radius:10px}
+.hsearch{border-radius:12px}.hsbtn{border-radius:9px}
+.chip{border-radius:8px}
+.panel{border-radius:14px}
+.sech h2,.prose h1,.info h1,main h1{font-family:var(--disp);font-weight:400;letter-spacing:0}
+.sech h2{font-size:24px}
+.sech a{font-weight:700}
+/* intro */
+.intro{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);gap:36px;align-items:center;padding:18px 0 8px}
+.intro h1{font-family:var(--disp);font-weight:400;font-size:clamp(34px,4.6vw,54px);line-height:1.08;margin:0 0 14px;color:var(--ink)}
+.intro p{font-size:18px;color:var(--ink2);margin:0 0 20px;max-width:34em}
+.intro .count{font-size:14px;color:var(--muted);margin:14px 0 0}
+.shots{display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(2,1fr);gap:10px;aspect-ratio:3/2}
+.shot{position:relative;border-radius:12px;overflow:hidden;background:#E4E8EE}
+.shot:first-child{grid-row:span 2;grid-column:span 1}
+.shot img{width:100%;height:100%;object-fit:cover}
+/* the price sticker */
+.tag{position:absolute;bottom:8px;right:8px;background:var(--tagc);color:var(--ink);font-family:var(--disp);font-size:17px;line-height:1;padding:7px 11px 6px 9px;border-radius:5px;transform:rotate(-3deg);box-shadow:0 2px 0 rgba(0,0,0,.18);direction:ltr}
+.tag:before{content:"";position:absolute;left:-1px;top:50%;width:7px;height:7px;margin-top:-3.5px;border-radius:50%;background:rgba(255,255,255,.9);box-shadow:inset 0 0 0 1px rgba(0,0,0,.15);left:4px}
+.tag{padding-left:16px}
+/* categories */
+.catrow{display:flex;gap:8px;overflow-x:auto;padding:16px 0 4px;margin-top:18px;border-top:1px solid var(--line);scrollbar-width:none}
+.catrow::-webkit-scrollbar{display:none}
+.catrow a{flex:0 0 auto;display:inline-flex;align-items:center;gap:7px;padding:9px 14px;border-radius:9px;background:#fff;border:1px solid var(--line);color:var(--ink);font-weight:600;font-size:15px}
+.catrow a:hover{border-color:var(--blue);color:var(--ink)}
+.trends{margin:12px 0 0;color:var(--muted);font-size:15px}
+.trends a{margin-inline-start:10px;color:var(--ink2);text-decoration:underline;text-decoration-color:var(--line2);text-underline-offset:3px}
+/* cards: photo-led, no box */
+.card{background:transparent;border:0;padding:0;gap:8px;transition:none}
+.card:hover{transform:none;box-shadow:none}
+.card:hover .ct{text-decoration:underline}
+.card .ph{border-radius:12px}
+.card.promo .ph,.card.top .ph{outline:3px solid var(--gold);outline-offset:-3px}
+.card.top{box-shadow:none;border:0}.card.promo{border:0}
+.cb{padding:0 2px}
+.ct{color:var(--ink);font-weight:600}
+.cm{display:flex;gap:8px;flex-wrap:nowrap;white-space:nowrap;overflow:hidden}
+.cm span{flex:0 1 auto;min-width:0;overflow:hidden;text-overflow:ellipsis}.cm .cond{flex:0 0 auto}
+.cm .cond{color:var(--ink2);font-weight:700}
+.pmark{font-size:12px;font-weight:800;color:#7A5300}
+.grid{gap:22px 16px}
+@media (max-width:760px){
+  .intro{grid-template-columns:1fr;gap:18px;padding-top:6px}
+  .shots{display:flex;aspect-ratio:auto;overflow-x:auto;gap:8px;margin:0 -18px;padding:0 18px;scrollbar-width:none}
+  .shots::-webkit-scrollbar{display:none}
+  .shot{flex:0 0 42%;aspect-ratio:3/4}
+  .shot:first-child{flex-basis:42%}
+  .grid{gap:18px 10px}
+  .tag{font-size:15px}
+}
+.bigprice,.plan .pp,.stat b{font-family:var(--disp);font-weight:400}
