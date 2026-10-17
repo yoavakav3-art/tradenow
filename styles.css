@@ -1,11 +1,11 @@
-@font-face{font-family:Heebo;font-weight:400;font-display:swap;src:url(/heebo-hebrew-400-normal.woff2) format('woff2');unicode-range:U+0307-0308,U+0590-05FF,U+200C-2010,U+20AA,U+25CC,U+FB1D-FB4F}
-@font-face{font-family:Heebo;font-weight:700;font-display:swap;src:url(/heebo-hebrew-700-normal.woff2) format('woff2');unicode-range:U+0307-0308,U+0590-05FF,U+200C-2010,U+20AA,U+25CC,U+FB1D-FB4F}
-@font-face{font-family:Heebo;font-weight:800;font-display:swap;src:url(/heebo-hebrew-800-normal.woff2) format('woff2');unicode-range:U+0307-0308,U+0590-05FF,U+200C-2010,U+20AA,U+25CC,U+FB1D-FB4F}
-@font-face{font-family:Heebo;font-weight:900;font-display:swap;src:url(/heebo-hebrew-900-normal.woff2) format('woff2');unicode-range:U+0307-0308,U+0590-05FF,U+200C-2010,U+20AA,U+25CC,U+FB1D-FB4F}
-@font-face{font-family:Heebo;font-weight:400;font-display:swap;src:url(/heebo-latin-400-normal.woff2) format('woff2');unicode-range:U+0000-00FF,U+2000-206F,U+20AC,U+2122}
-@font-face{font-family:Heebo;font-weight:700;font-display:swap;src:url(/heebo-latin-700-normal.woff2) format('woff2');unicode-range:U+0000-00FF,U+2000-206F,U+20AC,U+2122}
-@font-face{font-family:Heebo;font-weight:800;font-display:swap;src:url(/heebo-latin-800-normal.woff2) format('woff2');unicode-range:U+0000-00FF,U+2000-206F,U+20AC,U+2122}
-@font-face{font-family:Heebo;font-weight:900;font-display:swap;src:url(/heebo-latin-900-normal.woff2) format('woff2');unicode-range:U+0000-00FF,U+2000-206F,U+20AC,U+2122}
+@font-face{font-family:Heebo;font-weight:400;font-display:swap;src:url(heebo-hebrew-400-normal.woff2) format('woff2');unicode-range:U+0307-0308,U+0590-05FF,U+200C-2010,U+20AA,U+25CC,U+FB1D-FB4F}
+@font-face{font-family:Heebo;font-weight:700;font-display:swap;src:url(heebo-hebrew-700-normal.woff2) format('woff2');unicode-range:U+0307-0308,U+0590-05FF,U+200C-2010,U+20AA,U+25CC,U+FB1D-FB4F}
+@font-face{font-family:Heebo;font-weight:800;font-display:swap;src:url(heebo-hebrew-800-normal.woff2) format('woff2');unicode-range:U+0307-0308,U+0590-05FF,U+200C-2010,U+20AA,U+25CC,U+FB1D-FB4F}
+@font-face{font-family:Heebo;font-weight:900;font-display:swap;src:url(heebo-hebrew-900-normal.woff2) format('woff2');unicode-range:U+0307-0308,U+0590-05FF,U+200C-2010,U+20AA,U+25CC,U+FB1D-FB4F}
+@font-face{font-family:Heebo;font-weight:400;font-display:swap;src:url(heebo-latin-400-normal.woff2) format('woff2');unicode-range:U+0000-00FF,U+2000-206F,U+20AC,U+2122}
+@font-face{font-family:Heebo;font-weight:700;font-display:swap;src:url(heebo-latin-700-normal.woff2) format('woff2');unicode-range:U+0000-00FF,U+2000-206F,U+20AC,U+2122}
+@font-face{font-family:Heebo;font-weight:800;font-display:swap;src:url(heebo-latin-800-normal.woff2) format('woff2');unicode-range:U+0000-00FF,U+2000-206F,U+20AC,U+2122}
+@font-face{font-family:Heebo;font-weight:900;font-display:swap;src:url(heebo-latin-900-normal.woff2) format('woff2');unicode-range:U+0000-00FF,U+2000-206F,U+20AC,U+2122}
 :root{--navy:#0A1222;--navy2:#13213D;--blue:#0A64E8;--blue-d:#0850BB;--glow:#2E8BFF;--bg:#F3F6FB;--card:#fff;--ink:#0F172A;--ink2:#334155;--muted:#5B6576;--line:#E3E8F0;--line2:#CBD5E1;--green:#15803D;--red:#B42318;--gold:#FFC233}
 *{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%}

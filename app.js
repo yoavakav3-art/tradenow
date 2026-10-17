@@ -429,7 +429,7 @@ async function pLogin() {
     <button class="btn btn-p w100 sq" id="abtn">${mode === 'in' ? 'התחברות' : 'הרשמה'}</button></form>
     ${mode === 'in' ? '<button class="btn btn-g w100" id="forgot" style="margin-top:10px;border:0">שכחתי סיסמה</button>' : ''}</div></div>`;
     V.querySelectorAll('[data-m]').forEach(b => b.onclick = () => { mode = b.dataset.m; draw(); });
-    const fg = document.getElementById('forgot'); if (fg) fg.onclick = async () => { const em = document.getElementById('ae').value.trim(); if (!em) { document.getElementById('aerr').textContent = 'כתוב קודם את האימייל שלך'; return; } await sb.auth.resetPasswordForEmail(em, { redirectTo: location.origin + '/' }); toast('אם המייל רשום, שלחנו קישור לאיפוס'); };
+    const fg = document.getElementById('forgot'); if (fg) fg.onclick = async () => { const em = document.getElementById('ae').value.trim(); if (!em) { document.getElementById('aerr').textContent = 'כתוב קודם את האימייל שלך'; return; } await sb.auth.resetPasswordForEmail(em, { redirectTo: location.origin + location.pathname }); toast('אם המייל רשום, שלחנו קישור לאיפוס'); };
     document.getElementById('af').onsubmit = async e => {
       e.preventDefault();
       const em = document.getElementById('ae').value.trim(), pw = document.getElementById('ap').value, err = document.getElementById('aerr'), btn = document.getElementById('abtn');
@@ -444,7 +444,7 @@ async function pLogin() {
         if (!name) { err.textContent = 'בחר שם לתצוגה'; btn.disabled = false; return; }
         if (!document.getElementById('aok').checked) { err.textContent = 'צריך לאשר את התקנון'; btn.disabled = false; return; }
         if (pw.length < 8) { err.textContent = 'הסיסמה צריכה להיות לפחות 8 תווים'; btn.disabled = false; return; }
-        const { data, error } = await sb.auth.signUp({ email: em, password: pw, options: { data: { display_name: name }, emailRedirectTo: location.origin + '/' } });
+        const { data, error } = await sb.auth.signUp({ email: em, password: pw, options: { data: { display_name: name }, emailRedirectTo: location.origin + location.pathname } });
         if (error) { err.textContent = errMsg(error); btn.disabled = false; return; }
         if (data.session) { toast('ברוך הבא ל-TradeNow!'); go(next); }
         else V.innerHTML = `<div class="panel empty" style="max-width:520px;margin:20px auto">${ic('mail', 52, '#0A64E8')}<h3>כמעט סיימנו!</h3><p>שלחנו מייל ל-<b dir="ltr">${esc(em)}</b>.<br>לחץ על הקישור שבמייל כדי לאשר את החשבון, ואז התחבר.</p><p class="hint">לא מוצא? בדוק בתיקיית הספאם.</p><a class="btn btn-p" href="#/login">להתחברות</a></div>`;
