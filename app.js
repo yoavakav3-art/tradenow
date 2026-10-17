@@ -24,6 +24,7 @@ const GRADS = ['linear-gradient(135deg,#1E40AF,#2E8BFF)', 'linear-gradient(135de
 const price = p => p === 0 ? 'חינם' : '₪' + Number(p).toLocaleString('en-US');
 const imgUrl = p => `${SB_URL}/storage/v1/object/public/listing-images/${p}`;
 // smaller copies for lists/gallery (falls back to the original file if resizing is unavailable)
+const natUrl = p => `${SB_URL}/storage/v1/render/image/public/listing-images/${p}?width=480&height=900&resize=contain&quality=70`;
 const thumbUrl = p => `${SB_URL}/storage/v1/render/image/public/listing-images/${p}?width=480&height=480&resize=cover&quality=70`;
 const bigUrl = p => `${SB_URL}/storage/v1/render/image/public/listing-images/${p}?width=1100&height=1100&resize=contain&quality=75`;
 const imgFallback = p => `onerror="this.onerror=null;this.src='${imgUrl(p)}'"`;
@@ -46,7 +47,7 @@ function card(l) {
   const img = l.images && l.images[0];
   const r = rank(l);
   return `<a class="card ${r === 2 ? 'top' : r === 1 ? 'promo' : ''}" href="#/item/${l.id}">
-  <div class="ph">${img ? `<img loading="lazy" decoding="async" src="${thumbUrl(img)}" ${imgFallback(img)} alt="${esc(l.title)}">` : `<div class="noimg">${ic('photo', 40, '#94A3B8')}</div>`}
+  <div class="ph">${img ? `<img loading="lazy" decoding="async" src="${natUrl(img)}" ${imgFallback(img)} alt="${esc(l.title)}">` : `<div class="noimg">${ic('photo', 40, '#94A3B8')}</div>`}
   <span class="tag">${price(l.price)}</span>
   ${l.status === 'sold' ? '<span class="soldtag">נמכר</span>' : ''}</div>
   <div class="cb"><div class="ct">${esc(l.title)}</div><div class="cm"><span class="cond">${COND[l.condition]}</span><span>${esc(l.city)}</span><span>${ago(l.created_at)}</span></div>${r ? `<div class="pmark">${r === 2 ? 'בראש הדף' : 'מקודם'}</div>` : ''}</div></a>`;
@@ -112,21 +113,18 @@ async function pHome(_, id) {
   if (stale(id)) return;
   const items = sortRanked(list || []);
   const promoted = items.filter(l => rank(l) > 0).slice(0, 8);
-  const shots = (list || []).filter(l => l.images && l.images[0]).slice(0, 5);
+  const shots = (list || []).filter(l => l.images && l.images[0]).slice(0, 6);
   V.innerHTML = `
-  <section class="intro">
-    <div class="intro-txt">
-      <h1>קונים ומוכרים ישר מאנשים.</h1>
-      <p>יד שנייה, מוצרים חדשים ומותגים קטנים. מעלים מודעה בחינם, מדברים בצ׳אט עם המוכר וסוגרים ביניכם.</p>
-      <div class="row-actions"><a class="btn btn-p" href="#/sell">${ic('plus', 18, '#fff', 2.4)}לפרסם מודעה</a><a class="btn btn-g" href="#/search">לכל המודעות</a></div>
-      ${(list || []).length ? `<p class="count">${(list || []).length} מודעות פעילות באתר עכשיו</p>` : ''}
-    </div>
-    ${shots.length >= 3 ? `<div class="shots">${shots.map(l => `<a href="#/item/${l.id}" class="shot"><img src="${thumbUrl(l.images[0])}" ${imgFallback(l.images[0])} alt="${esc(l.title)}"><span class="tag">${price(l.price)}</span></a>`).join('')}</div>` : ''}
-  </section>
-  <nav class="catrow" aria-label="קטגוריות">${Object.entries(CATS).map(([k, [t, i]]) => `<a href="#/search?cat=${k}">${ic(i, 20, '#1E5FC4', 1.8)}${t}</a>`).join('')}</nav>
+  <section class="band"><div class="band-in">
+    <h1>מוכרים מה שלא צריך.<br>קונים מה שחיפשתם.</h1>
+    <p>לוח מודעות ליד שנייה, למוצרים חדשים ולמותגים קטנים. מפרסמים בחינם ומדברים ישר עם המוכר.</p>
+    <div class="band-act"><a class="btn btn-ink" href="#/sell">${ic('plus', 18, '#fff', 2.4)}לפרסם מודעה</a><a class="btn btn-white" href="#/search">לחפש מוצר</a></div>
+  </div></section>
+  ${shots.length >= 3 ? `<div class="strip">${shots.map(l => `<a href="#/item/${l.id}" class="snap"><img src="${thumbUrl(l.images[0])}" ${imgFallback(l.images[0])} alt="${esc(l.title)}"><span class="tag">${price(l.price)}</span></a>`).join('')}</div>` : ''}
+  <nav class="cattext" aria-label="קטגוריות"><span>קטגוריות:</span>${Object.entries(CATS).map(([k, [t]]) => `<a href="#/search?cat=${k}">${t}</a>`).join('')}</nav>
   ${trends && trends.length ? `<p class="trends">מחפשים עכשיו: ${trends.map(t => `<a href="#/search?q=${encodeURIComponent(t.query)}">${esc(t.query)}</a>`).join('')}</p>` : ''}
   ${promoted.length ? `<section class="sec"><div class="sech"><h2>מודעות מקודמות</h2></div>${grid(promoted)}</section>` : ''}
-  <section class="sec"><div class="sech"><h2>עלו לאחרונה</h2><a href="#/search">לכל המודעות</a></div>
+  <section class="sec"><div class="sech"><h2>עלו לאחרונה <small>${(list || []).length} מודעות פעילות</small></h2><a href="#/search">לכל המודעות</a></div>
   ${items.length ? grid(items.filter(l => !promoted.includes(l))) : `<div class="panel empty"><h3>עוד אין מודעות באתר</h3><p>מה שתפרסם עכשיו יופיע כאן ראשון.</p><a class="btn btn-p" href="#/sell">לפרסם מודעה</a></div>`}</section>`;
 }
 
